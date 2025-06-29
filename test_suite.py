@@ -10,6 +10,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
 from test_leafnode import TestLeafNode
 from test_htmlnode import TestHTMLNode
 from test_textnode import TestTextNode
+from test_parentnode import TestParentNode
 
 def create_test_suite():
     """Create a test suite with the specific tests you want to run."""
@@ -20,8 +21,8 @@ def create_test_suite():
     test_classes = [
         # TestTextNode,
         # TestHTMLNode,
-        TestLeafNode,
-        # TestParentNode,  # uncomment when ready
+        # TestLeafNode,
+        TestParentNode,
     ]
     
     # Add all test classes to the suite
