@@ -9,7 +9,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
 # Import your test modules
 from test_leafnode import TestLeafNode
 from test_htmlnode import TestHTMLNode
-from test_textnode import TestTextNode
+from test_textnode import *
 from test_parentnode import TestParentNode
 
 def create_test_suite():
@@ -22,7 +22,9 @@ def create_test_suite():
         # TestTextNode,
         # TestHTMLNode,
         # TestLeafNode,
-        TestParentNode,
+        # TestParentNode,
+        # TestTextNodeToHtmlNode,
+        TestSplitNodesDelimeter
     ]
     
     # Add all test classes to the suite
