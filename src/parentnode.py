@@ -12,4 +12,4 @@ class ParentNode(HTMLNode):
         child_nodes = []
         for item in self.children:
             child_nodes.append(item.to_html())
-        return f"<{self.tag}>{"".join(child_nodes)}</{self.tag}>"
+        return f"<{self.tag}>{''.join(child_nodes)}</{self.tag}>"
