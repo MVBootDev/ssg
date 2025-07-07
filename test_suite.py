@@ -11,6 +11,7 @@ from test_leafnode import TestLeafNode
 from test_htmlnode import TestHTMLNode
 from test_textnode import *
 from test_parentnode import TestParentNode
+from test_markdown import *
 
 def create_test_suite():
     """Create a test suite with the specific tests you want to run."""
@@ -24,7 +25,9 @@ def create_test_suite():
         # TestLeafNode,
         # TestParentNode,
         # TestTextNodeToHtmlNode,
-        TestSplitNodesDelimeter
+        # TestSplitNodesDelimeter
+        TestExtractImages,
+        TestExtractLinks
     ]
     
     # Add all test classes to the suite
