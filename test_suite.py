@@ -26,8 +26,8 @@ def create_test_suite():
         # TestParentNode,
         # TestTextNodeToHtmlNode,
         # TestSplitNodesDelimeter
-        TestExtractImages,
-        TestExtractLinks
+        TestSplitNodesImage,
+        TestSplitNodesLink
     ]
     
     # Add all test classes to the suite
