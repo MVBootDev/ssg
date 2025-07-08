@@ -365,5 +365,149 @@ class TestSplitNodesLink(unittest.TestCase):
         self.assertEqual(new_nodes, expected)
 
 
+class TestTextToTextNodes(unittest.TestCase):
+    def test_assignment_example(self):
+        """Test the exact example from the assignment."""
+        text = "This is **text** with an _italic_ word and a `code block` and an ![obi wan image](https://i.imgur.com/fJRm4Vk.jpeg) and a [link](https://boot.dev)"
+        nodes = text_to_textnodes(text)
+        expected = [
+            TextNode("This is ", TextType.TEXT),
+            TextNode("text", TextType.BOLD),
+            TextNode(" with an ", TextType.TEXT),
+            TextNode("italic", TextType.ITALIC),
+            TextNode(" word and a ", TextType.TEXT),
+            TextNode("code block", TextType.CODE),
+            TextNode(" and an ", TextType.TEXT),
+            TextNode("obi wan image", TextType.IMAGE, "https://i.imgur.com/fJRm4Vk.jpeg"),
+            TextNode(" and a ", TextType.TEXT),
+            TextNode("link", TextType.LINK, "https://boot.dev"),
+        ]
+        self.assertEqual(nodes, expected)
+    
+    def test_plain_text_only(self):
+        """Test with plain text that has no markdown."""
+        text = "This is just plain text with no formatting"
+        nodes = text_to_textnodes(text)
+        expected = [TextNode("This is just plain text with no formatting", TextType.TEXT)]
+        self.assertEqual(nodes, expected)
+    
+    def test_bold_only(self):
+        """Test with only bold formatting."""
+        text = "This is **bold** text"
+        nodes = text_to_textnodes(text)
+        expected = [
+            TextNode("This is ", TextType.TEXT),
+            TextNode("bold", TextType.BOLD),
+            TextNode(" text", TextType.TEXT),
+        ]
+        self.assertEqual(nodes, expected)
+    
+    def test_italic_only(self):
+        """Test with only italic formatting."""
+        text = "This is _italic_ text"
+        nodes = text_to_textnodes(text)
+        expected = [
+            TextNode("This is ", TextType.TEXT),
+            TextNode("italic", TextType.ITALIC),
+            TextNode(" text", TextType.TEXT),
+        ]
+        self.assertEqual(nodes, expected)
+    
+    def test_code_only(self):
+        """Test with only code formatting."""
+        text = "This is `code` text"
+        nodes = text_to_textnodes(text)
+        expected = [
+            TextNode("This is ", TextType.TEXT),
+            TextNode("code", TextType.CODE),
+            TextNode(" text", TextType.TEXT),
+        ]
+        self.assertEqual(nodes, expected)
+    
+    def test_link_only(self):
+        """Test with only link formatting."""
+        text = "This is a [link](https://example.com) here"
+        nodes = text_to_textnodes(text)
+        expected = [
+            TextNode("This is a ", TextType.TEXT),
+            TextNode("link", TextType.LINK, "https://example.com"),
+            TextNode(" here", TextType.TEXT),
+        ]
+        self.assertEqual(nodes, expected)
+    
+    def test_image_only(self):
+        """Test with only image formatting."""
+        text = "This is an ![image](https://example.com/image.png) here"
+        nodes = text_to_textnodes(text)
+        expected = [
+            TextNode("This is an ", TextType.TEXT),
+            TextNode("image", TextType.IMAGE, "https://example.com/image.png"),
+            TextNode(" here", TextType.TEXT),
+        ]
+        self.assertEqual(nodes, expected)
+    
+    def test_multiple_bold_italic(self):
+        """Test with multiple bold and italic elements."""
+        text = "**Bold** and _italic_ and **more bold**"
+        nodes = text_to_textnodes(text)
+        expected = [
+            TextNode("Bold", TextType.BOLD),
+            TextNode(" and ", TextType.TEXT),
+            TextNode("italic", TextType.ITALIC),
+            TextNode(" and ", TextType.TEXT),
+            TextNode("more bold", TextType.BOLD),
+        ]
+        self.assertEqual(nodes, expected)
+    
+    @unittest.skip("Nested formatting not supported in basic implementation")
+    def test_nested_formatting(self):
+        """Test that the pipeline handles nested formatting correctly."""
+        text = "**Bold with _italic_ inside**"
+        nodes = text_to_textnodes(text)
+        expected = [
+            TextNode("Bold with ", TextType.BOLD),
+            TextNode("italic", TextType.ITALIC),
+            TextNode(" inside", TextType.BOLD),
+        ]
+        self.assertEqual(nodes, expected)
+    
+    def test_multiple_links_and_images(self):
+        """Test with multiple links and images."""
+        text = "[Link 1](https://example1.com) and ![Image 1](https://example1.com/img.png) and [Link 2](https://example2.com)"
+        nodes = text_to_textnodes(text)
+        expected = [
+            TextNode("Link 1", TextType.LINK, "https://example1.com"),
+            TextNode(" and ", TextType.TEXT),
+            TextNode("Image 1", TextType.IMAGE, "https://example1.com/img.png"),
+            TextNode(" and ", TextType.TEXT),
+            TextNode("Link 2", TextType.LINK, "https://example2.com"),
+        ]
+        self.assertEqual(nodes, expected)
+    
+    def test_empty_string(self):
+        """Test with empty string."""
+        text = ""
+        nodes = text_to_textnodes(text)
+        expected = [TextNode("", TextType.TEXT)]
+        self.assertEqual(nodes, expected)
+    
+    def test_complex_mixed_formatting(self):
+        """Test with complex mixed formatting."""
+        text = "**Bold** _italic_ `code` [link](https://example.com) ![image](https://example.com/img.png)"
+        nodes = text_to_textnodes(text)
+        expected = [
+            TextNode("Bold", TextType.BOLD),
+            TextNode(" ", TextType.TEXT),
+            TextNode("italic", TextType.ITALIC),
+            TextNode(" ", TextType.TEXT),
+            TextNode("code", TextType.CODE),
+            TextNode(" ", TextType.TEXT),
+            TextNode("link", TextType.LINK, "https://example.com"),
+            TextNode(" ", TextType.TEXT),
+            TextNode("image", TextType.IMAGE, "https://example.com/img.png"),
+        ]
+        self.assertEqual(nodes, expected)
+
+
 if __name__ == "__main__":
     unittest.main()

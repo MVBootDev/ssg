@@ -31,7 +31,15 @@ class TextNode():
     
     def __repr__(self):
         return f"TextNode({self.text}, {self.text_type.value}, {self.url})"
-    
+
+def text_to_textnodes(text):
+    bold = split_nodes_delimiter([TextNode(text, TextType.TEXT)], "**", TextType.BOLD)
+    italic = split_nodes_delimiter(bold, "_", TextType.ITALIC)
+    code = split_nodes_delimiter(italic, "`", TextType.CODE)
+    link = split_nodes_link(code)
+    return split_nodes_image(link)
+
+
 # 4. Public functions (main API)
 def text_node_to_html_node(text_node):
     if not isinstance(text_node, TextNode):
@@ -95,6 +103,7 @@ def split_nodes_image_or_link(old_nodes: List[TextNode], node_type):
 
     return new_list
 
+# 5. Private helper functions (implementation details)
 def _split_text_by_image_or_link(text, node_type):
     match node_type.name:
         case "IMAGE":
@@ -127,7 +136,6 @@ def _split_text_by_image_or_link(text, node_type):
     return result
         
 
-# 5. Private helper functions (implementation details)
 def _split_text_by_delimiter(text, delimiter, text_type):
     """Split a single text string by delimiter and return list of TextNodes."""
     delimiter_length = len(delimiter)
