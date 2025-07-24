@@ -40,3 +40,115 @@ class TestExtractLinks(unittest.TestCase):
         expected = []
         value = extract_markdown_links(text)
         self.assertListEqual(value, expected)
+
+
+class TestMarkdownToBlocks(unittest.TestCase):
+    def test_markdown_to_blocks(self):
+        md = """
+            This is **bolded** paragraph
+
+            This is another paragraph with _italic_ text and `code` here
+            This is the same paragraph on a new line
+
+            - This is a list
+            - with items
+        """
+        blocks = markdown_to_blocks(md)
+        self.assertEqual(
+            blocks,
+            [
+                "This is **bolded** paragraph",
+                "This is another paragraph with _italic_ text and `code` here\nThis is the same paragraph on a new line",
+                "- This is a list\n- with items",
+            ],
+        )
+
+    def test_markdown_to_blocks_empty_string(self):
+        md = ""
+        blocks = markdown_to_blocks(md)
+        self.assertEqual(blocks, [])
+
+    def test_markdown_to_blocks_single_block(self):
+        md = "This is a single block with no separators"
+        blocks = markdown_to_blocks(md)
+        self.assertEqual(blocks, ["This is a single block with no separators"])
+
+    def test_markdown_to_blocks_excessive_newlines(self):
+        md = """
+Block 1
+
+
+Block 2
+
+
+
+Block 3
+"""
+        blocks = markdown_to_blocks(md)
+        self.assertEqual(blocks, ["Block 1", "Block 2", "Block 3"])
+
+    def test_markdown_to_blocks_heavy_indentation(self):
+        md = """
+        # Heading with spaces
+
+                This paragraph has heavy indentation
+                on multiple lines
+
+        - List item with indentation
+            - Nested item
+        """
+        blocks = markdown_to_blocks(md)
+        self.assertEqual(
+            blocks,
+            [
+                "# Heading with spaces",
+                "This paragraph has heavy indentation\non multiple lines",
+                "- List item with indentation\n- Nested item",
+            ],
+        )
+
+    def test_markdown_to_blocks_mixed_indentation(self):
+        md = """
+	Tab indented paragraph
+	with tab characters
+
+        Space indented paragraph
+        with space characters
+"""
+        blocks = markdown_to_blocks(md)
+        self.assertEqual(
+            blocks,
+            [
+                "Tab indented paragraph\nwith tab characters",
+                "Space indented paragraph\nwith space characters",
+            ],
+        )
+
+    def test_markdown_to_blocks_only_whitespace(self):
+        md = """
+
+
+        
+
+        
+"""
+        blocks = markdown_to_blocks(md)
+        self.assertEqual(blocks, [])
+
+    def test_markdown_to_blocks_preserve_single_newlines(self):
+        md = """
+First line
+Second line
+Third line
+
+Another block
+With more lines
+"""
+        blocks = markdown_to_blocks(md)
+        self.assertEqual(
+            blocks,
+            [
+                "First line\nSecond line\nThird line",
+                "Another block\nWith more lines",
+            ],
+        )

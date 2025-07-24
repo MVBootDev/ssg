@@ -28,7 +28,10 @@ def create_test_suite():
         # TestSplitNodesDelimeter,
         # TestSplitNodesImage,
         # TestSplitNodesLink,
-        TestTextToTextNodes
+        # TestTextToTextNodes
+        # TestExtractImages,
+        # TestExtractLinks,
+        # TestMarkdownToBlocks,
     ]
     
     # Add all test classes to the suite
