@@ -20,19 +20,20 @@ def create_test_suite():
     
     # Define all your test classes here
     test_classes = [
-        # TestTextNode,
-        # TestHTMLNode,
-        # TestLeafNode,
-        # TestParentNode,
-        # TestTextNodeToHtmlNode,
-        # TestSplitNodesDelimeter,
-        # TestSplitNodesImage,
-        # TestSplitNodesLink,
-        # TestTextToTextNodes
-        # TestExtractImages,
-        # TestExtractLinks,
-        # TestMarkdownToBlocks,
+        TestTextNode,
+        TestHTMLNode,
+        TestLeafNode,
+        TestParentNode,
+        TestTextNodeToHtmlNode,
+        TestSplitNodesDelimeter,
+        TestSplitNodesImage,
+        TestSplitNodesLink,
+        TestTextToTextNodes,
+        TestExtractImages,
+        TestExtractLinks,
+        TestMarkdownToBlocks,
         TestBlockToBlockType,
+        TestMarkdownToHtmlNode,
     ]
     
     # Add all test classes to the suite
