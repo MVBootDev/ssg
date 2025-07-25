@@ -32,6 +32,7 @@ def create_test_suite():
         # TestExtractImages,
         # TestExtractLinks,
         # TestMarkdownToBlocks,
+        TestBlockToBlockType,
     ]
     
     # Add all test classes to the suite

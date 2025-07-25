@@ -152,3 +152,50 @@ With more lines
                 "Another block\nWith more lines",
             ],
         )
+
+
+class TestBlockToBlockType(unittest.TestCase):
+    def test_code_block(self):
+        block = "```\nprint('hello world')\n```"
+        result = block_to_block_type(block)
+        self.assertEqual(result, BlockType.CODE)
+
+    def test_heading_block_h1(self):
+        block = "# This is a heading"
+        result = block_to_block_type(block)
+        self.assertEqual(result, BlockType.HEADING)
+
+    def test_heading_block_h6(self):
+        block = "###### This is an h6 heading"
+        result = block_to_block_type(block)
+        self.assertEqual(result, BlockType.HEADING)
+
+    def test_quote_block_single_line(self):
+        block = "> This is a quote"
+        result = block_to_block_type(block)
+        self.assertEqual(result, BlockType.QUOTE)
+
+    def test_quote_block_multi_line(self):
+        block = "> This is a quote\n> with multiple lines\n> of text"
+        result = block_to_block_type(block)
+        self.assertEqual(result, BlockType.QUOTE)
+
+    def test_unordered_list_block(self):
+        block = "- Item 1\n- Item 2\n- Item 3"
+        result = block_to_block_type(block)
+        self.assertEqual(result, BlockType.UNORDERED_LIST)
+
+    def test_ordered_list_block(self):
+        block = "1. First item\n2. Second item\n3. Third item"
+        result = block_to_block_type(block)
+        self.assertEqual(result, BlockType.ORDERED_LIST)
+
+    def test_paragraph_block(self):
+        block = "This is just a regular paragraph with some text."
+        result = block_to_block_type(block)
+        self.assertEqual(result, BlockType.PARAGRAPH)
+
+    def test_paragraph_block_multiline(self):
+        block = "This is a paragraph\nwith multiple lines\nbut no special formatting"
+        result = block_to_block_type(block)
+        self.assertEqual(result, BlockType.PARAGRAPH)
